@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="Website Style.css">
+</head>
+
+<body>
+
+    <h1>Find the Rockets </h1>
+
+    <div id="map" style="width:900px;height:600px;"></div>
+
+    <script>
+        function myMap() {
+
+            var X_coor = [30.374897, 28.455556, 37.833700, 34.632000, 45.920000]
+            var Y_coor = [130.958365, -80.527778, -75.488100, -120.611000, 63.342000]
+            var messages = ["Tanegashima Space Center, Minamitane District, Kagoshima Prefecture, Japan",
+                               "Northrop Grumman Innovation Systems, Port Canaveral, Florida, United States of America",
+                               "Wallops Island Launch Pad 0-A, Virginia, United States of America",
+                               "Vandenberg AFB, California, United States of America",
+                               "Kosmodrom Baykonur, Kazakhstan"]
+
+            var mapProp = {
+                center: new google.maps.LatLng(30.3749, 9.9584),
+                zoom: 2
+            };
+            var infowindow;
+            var map = new google.maps.Map(document.getElementById("map"), mapProp);
+        
+            var i;
+            for (i = 0; i < X_coor.length; i++) {
+                var marker = new google.maps.Marker({
+                    position: {
+                        lat: X_coor[i],
+                        lng: Y_coor[i]
+                    },
+                    map: map
+                });
+                marker.message = String(messages[i])
+
+                google.maps.event.addListener(marker, 'click', function () {
+                        if (infowindow) {
+                            infowindow.close()
+                        }
+                        infowindow = new google.maps.InfoWindow();
+                        infowindow.setContent(this.message)
+                        this.get('map').setZoom(9);
+                        this.get('map').setCenter(this.getPosition());
+                        infowindow.open(this.get('map'), this)
+                    });
+            }
+        }
+    </script>
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC7UVXqkdXrunWb4uY-R2ehNzkvr9UDZCk&callback=myMap"
+        type="text/javascript"></script>
+
+
+</body>
+
+</html>
